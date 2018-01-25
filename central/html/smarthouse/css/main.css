@@ -1,0 +1,22 @@
+html *
+{
+    font-family: Georgia, serif !important;
+}
+label
+{
+    font-weight:bold;
+}
+.box
+{
+    border:#666666 solid 1px;
+}
+th, td
+{
+    border:1px solid black;
+}
+table
+{
+    width:100%;
+    text-align:left;
+    border:2px solid black;
+}
