@@ -2,7 +2,7 @@ PROJECT_NAME     := boolSensor
 TARGETS          := nrf51822_xxaa
 OUTPUT_DIRECTORY := ../_build
 
-SDK_ROOT := /opt/nRF51_SDK
+SDK_ROOT := /opt/Nordic/nRF5_SDK_12.3.0_d7731ad
 
 $(OUTPUT_DIRECTORY)/nrf51822_xxaa.out: \
   LINKER_SCRIPT  := gcc_nrf51.ld
