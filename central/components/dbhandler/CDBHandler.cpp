@@ -88,7 +88,7 @@ void CDBHandler::add_sensor(std::string addr, std::string sen_type, std::string 
                                         " ON DUPLICATE KEY UPDATE type='" +
                                         sen_type + "', voltage='" +
                                         sen_voltage + "', value='" +
-                                        sen_value + "'";
+                                        sen_value + "', last_seen=NOW()";
 
         dbg::sout << dbg::info << add_sensor_query << dbg::endl;
 
