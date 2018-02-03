@@ -19,7 +19,7 @@
             break;
         default:
             $dev_addr = mysqli_real_escape_string($db,$_REQUEST['action']);
-            if(!mysqli_query($db, "INSERT INTO subscribed_wet_sensors (address) VALUES ('$dev_addr'"))
+            if(!mysqli_query($db, "INSERT INTO subscribed_wet_sensors (address) VALUES ('$dev_addr')"))
             {
                 mysqli_query($db, "DELETE FROM subscribed_wet_sensors WHERE address='$dev_addr'");
                 mysqli_query($db,"INSERT INTO data_log (unit, message) VALUES ('WATER VALVE', 'Unsubscribed sensor $dev_addr')");
