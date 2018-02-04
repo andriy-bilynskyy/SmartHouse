@@ -13,7 +13,7 @@ public:
     ~CDBHandler();
     void add_sensor(std::string addr, std::string sen_type, std::string sen_voltage, std::string sen_value);
     void rm_obsolete_sensors();
-    void add_log(std::string message);
+    void add_log(std::string unit, std::string message);
     bool check_water_fault(bool logFault);
     bool get_water_valve();
     void set_water_valve(bool state);

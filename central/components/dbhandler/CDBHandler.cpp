@@ -122,11 +122,11 @@ void CDBHandler::rm_obsolete_sensors()
     }   
 }
 
-void CDBHandler::add_log(std::string message)
+void CDBHandler::add_log(std::string unit, std::string message)
 {
     if(m_db_connected)
     {
-        std::string add_log_query = "INSERT INTO data_log (unit, message) VALUES ('BLUETOOTH', '" + message + "')";
+        std::string add_log_query = "INSERT INTO data_log (unit, message) VALUES ('" + unit + "', '" + message + "')";
         
         dbg::sout << dbg::info << add_log_query << dbg::endl;
         
@@ -170,7 +170,7 @@ bool CDBHandler::check_water_fault(bool logFault)
                         {
                             MYSQL_ROW row = mysql_fetch_row(res);
                             dbg::sout << dbg::warn << "failed water leak sensor: " << row[0] << dbg::endl;
-                            add_log(std::string("failed water leak sensor: ") + row[0]);
+                            add_log("WATER VALVE", std::string("Failed water leak sensor: ") + row[0]);
                         }
                     }
                 }

@@ -20,7 +20,7 @@ int main(void)
     static_cast<void>(signal(SIGTSTP, intHandler));
     static_cast<void>(signal(SIGTERM, intHandler));
     CDBHandler db;
-    db.add_log("Water valve control started.");
+    db.add_log("WATER VALVE", "Water valve control started.");
     CValveCtrl valve;
     while(!CValveCtrl::m_terminate)
     {
@@ -30,7 +30,7 @@ int main(void)
             {
                 db.set_water_valve(false);
                 dbg::sout << dbg::warn << "Water closed because of fault" << dbg::endl;
-                db.add_log("Water closed because of fault.");
+                db.add_log("WATER VALVE", "Water closed because of fault.");
             }
         }
         valve.turn(db.get_water_valve());
@@ -42,12 +42,12 @@ int main(void)
                 db.set_water_valve(false);
                 valve.turn(false);
                 dbg::sout << dbg::warn << "Water closed because of schedule" << dbg::endl;
-                db.add_log("Water closed because of schedule.");
+                db.add_log("WATER VALVE", "Water closed because of schedule.");
                 sleep(10);
                 db.set_water_valve(true);
                 valve.turn(true);
                 dbg::sout << dbg::warn << "Water opened because of schedule" << dbg::endl;
-                db.add_log("Water opened because of schedule.");
+                db.add_log("WATER VALVE", "Water opened because of schedule.");
                 sleep(10);
             }
         }
@@ -62,6 +62,6 @@ int main(void)
     static_cast<void>(signal(SIGTSTP, SIG_DFL));
     static_cast<void>(signal(SIGTERM, SIG_DFL));
     dbg::sout << dbg::warn << "Water valve control stopped" << dbg::endl;
-    db.add_log("Water valve control stopped.");
+    db.add_log("WATER VALVE", "Water valve control stopped.");
     return 0;
 }

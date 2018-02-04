@@ -63,7 +63,7 @@ int main(void)
     dbg::sout << dbg::warn << "BLE sensors scanner started" << dbg::endl;
 
     CDBHandler db;
-    db.add_log("BLE sensors scanner started");
+    db.add_log("BLUETOOTH", "BLE sensors scanner started");
 
     static_cast<void>(signal(SIGINT, intHandler));
     static_cast<void>(signal(SIGHUP, intHandler));
@@ -116,7 +116,7 @@ int main(void)
     static_cast<void>(signal(SIGTSTP, SIG_DFL));
     static_cast<void>(signal(SIGTERM, SIG_DFL));
 
-    db.add_log("BLE sensors scanner stopped");
+    db.add_log("BLUETOOTH", "BLE sensors scanner stopped");
     dbg::sout << dbg::warn << "BLE sensors scanner stopped" << dbg::endl;
 
     return 0;
