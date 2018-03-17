@@ -16,10 +16,7 @@ LIB_FILES += \
   mysqlclient \
   pthread \
 
-ifeq ($(MACHIME),armv6l)
-LIB_FILES += wiringPi
-endif
-ifeq ($(MACHIME),armv7l)
+ifeq ($(shell dpkg --print-architecture),armhf)
 LIB_FILES += wiringPi
 endif
 
