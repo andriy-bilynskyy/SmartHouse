@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/usr/local/bin/"
-cmd="./ble_scanner"
+cmd="ble_scanner"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
@@ -18,11 +18,11 @@ stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
 
 get_pid() {
-    cat "$pid_file"
+    pgrep $cmd
 }
 
 is_running() {
-    [ -f "$pid_file" ] && ps -p `get_pid` > /dev/null 2>&1
+    pgrep -x $cmd > /dev/null
 }
 
 case "$1" in
@@ -30,19 +30,29 @@ case "$1" in
     if is_running; then
         echo "Already started"
     else
-        echo "Starting $name"
-        cd "$dir"
-        sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
-        echo $! > "$pid_file"
+        echo -n "Starting $name"
+        $dir/$cmd >> "$stdout_log" 2>> "$stderr_log" &
+        for i in 1 2 3 4 5 6 7 8 9 10
+        do
+            if is_running; then
+                break
+            fi
+            echo -n "."
+            sleep 1
+        done
+        echo
+
         if ! is_running; then
             echo "Unable to start, see $stdout_log and $stderr_log"
             exit 1
+        else
+            echo "Started"
         fi
     fi
     ;;
     stop)
     if is_running; then
-        echo -n "Stopping $name.."
+        echo -n "Stopping $name"
         kill -INT `get_pid`
         for i in 1 2 3 4 5 6 7 8 9 10
         # for i in `seq 10`
@@ -61,9 +71,6 @@ case "$1" in
             exit 1
         else
             echo "Stopped"
-            if [ -f "$pid_file" ]; then
-                rm "$pid_file"
-            fi
         fi
     else
         echo "Not running"

@@ -16,6 +16,13 @@ LIB_FILES += \
   mysqlclient \
   pthread \
 
+ifeq ($(MACHIME),armv6l)
+LIB_FILES += wiringPi
+endif
+ifeq ($(MACHIME),armv7l)
+LIB_FILES += wiringPi
+endif
+
 CFLAGS += -O0
 CFLAGS += -g3
 CFLAGS += -Wall
