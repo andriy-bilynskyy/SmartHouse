@@ -9,8 +9,8 @@ necessarily libraries:
 
 	make
 #### Insatallation
-	sudo cp ble_scanner /etc/init.d/
-	sudo update-rc.d ble_scanner defaults
+	sudo cp ble_scanner_serv /etc/init.d/
+	sudo update-rc.d ble_scanner_serv defaults
 #### Usage
 	sudo /etc/init.d/ble_scanner status
 	sudo /etc/init.d/ble_scanner start

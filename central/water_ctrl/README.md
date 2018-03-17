@@ -9,8 +9,8 @@ necessarily libraries:
 
 	make
 #### Insatallation
-	sudo cp valve_ctrl /etc/init.d/
-	sudo update-rc.d valve_ctrl defaults
+	sudo cp valve_ctrl_serv /etc/init.d/
+	sudo update-rc.d valve_ctrl_serv defaults
 #### Usage
 	sudo /etc/init.d/valve_ctrl status
 	sudo /etc/init.d/valve_ctrl start
