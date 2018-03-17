@@ -19,14 +19,14 @@ stderr_log="/var/log/$name.err"
 
 case "$1" in
     start)
-    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+    if pgrep -x "$cmd" >/dev/null 2>&1 ; then
         echo "Already started"
     else
         echo -n "Starting $name"
         $dir$cmd >> "$stdout_log" 2>> "$stderr_log" &
         for i in 1 2 3 4 5 6 7 8 9 10
         do
-            if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+            if pgrep -x "$cmd" >/dev/null 2>&1 ; then
                 break
             fi
             echo -n "."
@@ -34,7 +34,7 @@ case "$1" in
         done
         echo
 
-        if ! pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+        if ! pgrep -x "$cmd" >/dev/null 2>&1 ; then
             echo "Unable to start, see $stdout_log and $stderr_log"
             exit 1
         else
@@ -43,12 +43,12 @@ case "$1" in
     fi
     ;;
     stop)
-    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+    if pgrep -x "$cmd" >/dev/null 2>&1 ; then
         echo -n "Stopping $name"
-        pkill -INT -f $dir$cmd
+        pkill -INT -x $cmd
         for i in 1 2 3 4 5 6 7 8 9 10
         do
-            if ! pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+            if ! pgrep -x "$cmd" >/dev/null 2>&1 ; then
                 break
             fi
             echo -n "."
@@ -56,7 +56,7 @@ case "$1" in
         done
         echo
 
-        if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+        if pgrep -x "$cmd" >/dev/null 2>&1 ; then
             echo "Not stopped; may still be shutting down or shutdown may have failed"
             exit 1
         else
@@ -68,14 +68,14 @@ case "$1" in
     ;;
     restart)
     $0 stop
-    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+    if pgrep -x "$cmd" >/dev/null 2>&1 ; then
         echo "Unable to stop, will not attempt to start"
         exit 1
     fi
     $0 start
     ;;
     status)
-    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
+    if pgrep -x "$cmd" >/dev/null 2>&1 ; then
         echo "Running"
     else
         echo "Stopped"
