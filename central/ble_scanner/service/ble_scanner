@@ -17,24 +17,16 @@ pid_file="/var/run/$name.pid"
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
 
-get_pid() {
-    pgrep $cmd
-}
-
-is_running() {
-    pgrep -x $cmd > /dev/null
-}
-
 case "$1" in
     start)
-    if is_running; then
+    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
         echo "Already started"
     else
         echo -n "Starting $name"
-        $dir/$cmd >> "$stdout_log" 2>> "$stderr_log" &
+        $dir$cmd >> "$stdout_log" 2>> "$stderr_log" &
         for i in 1 2 3 4 5 6 7 8 9 10
         do
-            if is_running; then
+            if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
                 break
             fi
             echo -n "."
@@ -42,7 +34,7 @@ case "$1" in
         done
         echo
 
-        if ! is_running; then
+        if ! pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
             echo "Unable to start, see $stdout_log and $stderr_log"
             exit 1
         else
@@ -51,22 +43,20 @@ case "$1" in
     fi
     ;;
     stop)
-    if is_running; then
+    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
         echo -n "Stopping $name"
-        kill -INT `get_pid`
+        pkill -INT -f $dir$cmd
         for i in 1 2 3 4 5 6 7 8 9 10
-        # for i in `seq 10`
         do
-            if ! is_running; then
+            if ! pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
                 break
             fi
-
             echo -n "."
             sleep 1
         done
         echo
 
-        if is_running; then
+        if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
             echo "Not stopped; may still be shutting down or shutdown may have failed"
             exit 1
         else
@@ -78,14 +68,14 @@ case "$1" in
     ;;
     restart)
     $0 stop
-    if is_running; then
+    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
         echo "Unable to stop, will not attempt to start"
         exit 1
     fi
     $0 start
     ;;
     status)
-    if is_running; then
+    if pgrep -f "$dir$cmd" >/dev/null 2>&1 ; then
         echo "Running"
     else
         echo "Stopped"
