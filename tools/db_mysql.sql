@@ -35,7 +35,7 @@ INSERT INTO users (user_name, password) VALUES (
 
 CREATE TABLE data_log (
     record_id int(11)      unsigned NOT NULL auto_increment, 
-    date_time TIMESTAMP    NOT NULL DEFAULT NOW(),
+    date_time TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     unit      VARCHAR(64)  NOT NULL DEFAULT 'N/A',
     message   VARCHAR(253) NOT NULL DEFAULT '',
 
@@ -51,7 +51,7 @@ CREATE TABLE on_line_sensors (
     type      VARCHAR(24)   NOT NULL,
     voltage   CHARACTER(4)  NOT NULL,
     value     VARCHAR(24)   NOT NULL,
-    last_seen TIMESTAMP     NOT NULL DEFAULT NOW(),
+    last_seen TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (address)
 );
@@ -85,7 +85,7 @@ CREATE TABLE subscribed_temperature_sensors (
 CREATE TABLE valves (
     name     CHARACTER(32)  NOT NULL,
     state    binary     NOT NULL DEFAULT 0,
-    op_time  TIMESTAMP  NOT NULL DEFAULT NOW(), 
+    op_time  TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
 
     PRIMARY KEY (name)
 );

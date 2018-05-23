@@ -6,13 +6,13 @@
         switch($_REQUEST['action'])
         {
         case 'water opened':
-            if(mysqli_query($db, "UPDATE valves SET state=0, op_time=NOW() WHERE name='main water tap'"))
+            if(mysqli_query($db, "UPDATE valves SET state=0 WHERE name='main water tap'"))
             {
                 mysqli_query($db,"INSERT INTO data_log (unit, message) VALUES ('WATER VALVE', 'Water closed from WEB.')");
             }
             break;
         case 'water closed':
-            if(mysqli_query($db, "UPDATE valves SET state=1, op_time=NOW() WHERE name='main water tap'"))
+            if(mysqli_query($db, "UPDATE valves SET state=1 WHERE name='main water tap'"))
             {
                 mysqli_query($db,"INSERT INTO data_log (unit, message) VALUES ('WATER VALVE', 'Water opened from WEB.')");
             }
@@ -80,7 +80,7 @@
             <div style = "background-color:#555555; color:#FFFFFF; padding:3px;"><b>Water leak sensors</b></div><br/>
             <table cellpadding=5px><tr><th>subscription</th><th>address</th><th>description</th><th>state</th><th>last seen</th><th>voltage</th></tr>
             <?php
-            $result = mysqli_query($db, "SELECT 'yes' as subscribed, subscribed_wet_sensors.address, subscribed_wet_sensors.description, on_line_sensors.value, TIMEDIFF(NOW(), on_line_sensors.last_seen) as time, on_line_sensors.voltage FROM subscribed_wet_sensors LEFT JOIN on_line_sensors ON subscribed_wet_sensors.address=on_line_sensors.address and on_line_sensors.type='w_leak' UNION SELECT 'no' AS subscribed, address, NULL AS description, value, TIMEDIFF(NOW(),on_line_sensors.last_seen) as time, on_line_sensors.voltage FROM on_line_sensors WHERE type = 'w_leak' and address NOT IN  (SELECT address FROM subscribed_wet_sensors)");
+            $result = mysqli_query($db, "SELECT 'yes' as subscribed, subscribed_wet_sensors.address as address, subscribed_wet_sensors.description, on_line_sensors.value, TIMEDIFF(NOW(), on_line_sensors.last_seen) as time, on_line_sensors.voltage FROM subscribed_wet_sensors LEFT JOIN on_line_sensors ON subscribed_wet_sensors.address=on_line_sensors.address and on_line_sensors.type='w_leak' UNION SELECT 'no' AS subscribed, address, NULL AS description, value, TIMEDIFF(NOW(),on_line_sensors.last_seen) as time, on_line_sensors.voltage FROM on_line_sensors WHERE type = 'w_leak' and address NOT IN  (SELECT address FROM subscribed_wet_sensors) ORDER BY address");
             while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
             {
                 if($row["value"] == "key")

@@ -1,5 +1,5 @@
 <?php
-    header("Refresh:5");
+    //header("Refresh:5");
     include("../session.php");
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
@@ -39,7 +39,7 @@
         </form>
         <table cellpadding=5px><col style="width:19ch"><tr><th>time</th><th>message</th></tr>
         <?php
-            $result = mysqli_query($db,"SELECT date_time, message FROM data_log WHERE unit='WATER VALVE' or unit='BLUETOOTH'");
+            $result = mysqli_query($db,"SELECT date_time, message FROM data_log WHERE unit='WATER VALVE' or unit='BLUETOOTH' ORDER BY date_time");
             while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
             {
                 echo "<tr><td>".$row["date_time"]."</td><td>".$row["message"]."</td></tr>";
